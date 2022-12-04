@@ -5,9 +5,9 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     secondary: {
-      light: grey[500],
-      main: grey[700],
-      dark: grey[900],
+      light: grey[400],
+      main: grey[500],
+      dark: grey[600],
     },
     background: {
       paper: "#fff",
@@ -25,9 +25,9 @@ export const darkTheme = createTheme({
       dark: teal[700],
     },
     secondary: {
-      light: grey[500],
-      main: grey[700],
-      dark: grey[900],
+      light: grey[400],
+      main: grey[500],
+      dark: grey[600],
     },
     background: {
       paper: "#222731",

@@ -1,9 +1,17 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import React from "react";
 
-export default function Home() {
+export default function Homepage() {
   return (
     <>
-      <Typography>Homepage</Typography>
+      <Box mt={3}>
+        <Typography fontSize={"1.3rem"} variant="h2">
+          Current Posts
+        </Typography>
+        <Typography fontSize={"1.3rem"} variant="h2">
+          Current Users
+        </Typography>
+      </Box>
     </>
   );
 }
