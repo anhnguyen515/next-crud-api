@@ -38,7 +38,7 @@ function MyApp({
   return (
     <>
       <CacheProvider value={emotionCache}>
-        <DefaultSeo title="CRUD with NextJS" />
+        <DefaultSeo title="Simple CRUD" />
         <NextNProgress
           nonce="my-nonce"
           showOnShallow

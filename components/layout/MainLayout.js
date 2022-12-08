@@ -20,7 +20,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
       <Box sx={{ pt: 3, pb: 3 }}>
         <Stack alignItems={"center"} direction={"row"}>
           <Typography fontSize={"1.6rem"} fontWeight={600} variant="h1">
-            CRUD with NextJS
+            Simple CRUD
           </Typography>
           <Stack
             alignItems={"center"}
@@ -33,6 +33,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
               <Typography
                 color={router.asPath === "/" && "primary.main"}
                 fontWeight={router.asPath === "/" && 500}
+                sx={{ "&:hover": { textDecoration: "underline" } }}
               >
                 Homepage
               </Typography>
@@ -41,6 +42,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
               <Typography
                 color={router.asPath.includes("/posts") && "primary.main"}
                 fontWeight={router.asPath.includes("/posts") && 500}
+                sx={{ "&:hover": { textDecoration: "underline" } }}
               >
                 Posts
               </Typography>
@@ -49,6 +51,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
               <Typography
                 color={router.asPath.includes("/users") && "primary.main"}
                 fontWeight={router.asPath.includes("/users") && 500}
+                sx={{ "&:hover": { textDecoration: "underline" } }}
               >
                 Users
               </Typography>
