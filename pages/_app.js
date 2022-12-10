@@ -1,17 +1,17 @@
 import "@fontsource/roboto";
-import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import "../styles/globals.css";
 
 import { CacheProvider } from "@emotion/react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Cookies from "js-cookie";
+import { DefaultSeo } from "next-seo";
 import NextNProgress from "nextjs-progressbar";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import MainLayout from "../components/layout/MainLayout";
 import createEmotionCache from "../utils/createEmotionCache";
 import { darkTheme, lightTheme } from "../utils/theme";
-import { DefaultSeo } from "next-seo";
-import { ToastContainer } from "react-toastify";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -19,23 +19,24 @@ function MyApp({
   Component,
   emotionCache = clientSideEmotionCache,
   pageProps,
+  router,
 }) {
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   function toggleTheme() {
     setIsDarkMode((prev) => !prev);
+    Cookies.set("isDarkMode", isDarkMode == true ? false : true, {
+      secure: true,
+      expires: 7,
+    });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const data = Cookies.get("isDarkMode");
     if (data !== undefined) {
       setIsDarkMode(JSON.parse(data));
     }
   }, []);
-
-  React.useEffect(() => {
-    Cookies.set("isDarkMode", isDarkMode, { secure: true, expires: 365 });
-  }, [isDarkMode]);
 
   return (
     <>
@@ -44,8 +45,13 @@ function MyApp({
         <NextNProgress
           nonce="my-nonce"
           showOnShallow
+          color={
+            isDarkMode
+              ? darkTheme.palette.primary.main
+              : lightTheme.palette.primary.main
+          }
           startPosition={0.3}
-          stopDelayMs={200}
+          // stopDelayMs={200}
           height={3}
           options={{
             showSpinner: false,
@@ -54,7 +60,7 @@ function MyApp({
         <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
           <CssBaseline />
           <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
-            <Component {...pageProps} />
+            <Component {...pageProps} key={router.asPath} />
           </MainLayout>
         </ThemeProvider>
         <ToastContainer autoClose={3000} />

@@ -37,13 +37,13 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
             divider={<Divider orientation="vertical" flexItem />}
             gap={3}
           >
-            <Link href={"/"}>
+            <Link href={"/users"}>
               <Typography
-                color={router.asPath === "/" && "primary.main"}
-                fontWeight={router.asPath === "/" && 500}
+                color={router.asPath.includes("/users") && "primary.main"}
+                fontWeight={router.asPath.includes("/users") && 500}
                 sx={{ "&:hover": { textDecoration: "underline" } }}
               >
-                Homepage
+                Users
               </Typography>
             </Link>
             <Link href={"/posts"}>
@@ -55,15 +55,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
                 Posts
               </Typography>
             </Link>
-            <Link href={"/users"}>
-              <Typography
-                color={router.asPath.includes("/users") && "primary.main"}
-                fontWeight={router.asPath.includes("/users") && 500}
-                sx={{ "&:hover": { textDecoration: "underline" } }}
-              >
-                Users
-              </Typography>
-            </Link>
+
             <IconButton onClick={toggleTheme} size="small">
               {isDarkMode ? (
                 <LightModeIcon fontSize="small" />

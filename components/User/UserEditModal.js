@@ -6,8 +6,10 @@ import {
   MenuItem,
   Select,
   Stack,
+  Switch,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -18,11 +20,13 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import { editUser } from "../../apis/user_apis";
 
-export default function UserEditModal({ user, getUserData }) {
+export default function UserEditModal({ user }) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [sexValue, setSexValue] = React.useState(user.gender);
-  const [statusValue, setStatusValue] = React.useState(user.status);
+  const [checkActive, setCheckActive] = React.useState(
+    user.status === "active" ? true : false
+  );
 
   const nameRef = React.useRef(null);
   const emailRef = React.useRef(null);
@@ -31,8 +35,8 @@ export default function UserEditModal({ user, getUserData }) {
     setSexValue(event.target.value);
   }
 
-  function handleSelectStatus(event) {
-    setStatusValue(event.target.value);
+  function handleSwitchStatus(event) {
+    setCheckActive(event.target.checked);
   }
 
   const handleClickOpen = () => {
@@ -53,14 +57,14 @@ export default function UserEditModal({ user, getUserData }) {
       name: nameRef.current.value,
       email: emailRef.current.value,
       gender: sexValue,
-      status: statusValue,
+      status: checkActive ? "active" : "inactive",
     };
     editUser(user.id, p)
       .then(() => {
         handleClose();
         setLoading(false);
         toast.success(`Successfully edited user #${user.id}.`);
-        getUserData();
+        window.location.href = `/users/${user.id}`;
       })
       .catch(() => {
         toast.error("Something went wrong.");
@@ -105,31 +109,30 @@ export default function UserEditModal({ user, getUserData }) {
               label="Email"
               type="email"
             />
-            <Stack direction={"row"} gap={2}>
-              <FormControl fullWidth>
-                <InputLabel id="sex">Gender</InputLabel>
-                <Select
-                  labelId="sex"
-                  label="Gender"
-                  onChange={handleSelectSex}
-                  value={sexValue}
-                >
-                  <MenuItem value={"male"}>Male</MenuItem>
-                  <MenuItem value={"female"}>Female</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="sex">Status</InputLabel>
-                <Select
-                  labelId="sex"
-                  label="Gender"
-                  onChange={handleSelectStatus}
-                  value={statusValue}
-                >
-                  <MenuItem value={"active"}>Active</MenuItem>
-                  <MenuItem value={"inactive"}>Inactive</MenuItem>
-                </Select>
-              </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="sex">Gender</InputLabel>
+              <Select
+                labelId="sex"
+                label="Gender"
+                onChange={handleSelectSex}
+                value={sexValue}
+              >
+                <MenuItem value={"male"}>Male</MenuItem>
+                <MenuItem value={"female"}>Female</MenuItem>
+              </Select>
+            </FormControl>
+            <Stack alignItems={"center"} direction={"row"} gap={1}>
+              <Typography color={!checkActive ? "error.main" : "text.main"}>
+                Inactive
+              </Typography>
+              <Switch
+                checked={checkActive}
+                onChange={handleSwitchStatus}
+                size="small"
+              />
+              <Typography color={checkActive ? "success.main" : "text.main"}>
+                Active
+              </Typography>
             </Stack>
           </Stack>
         </DialogContent>

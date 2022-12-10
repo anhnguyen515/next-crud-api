@@ -140,7 +140,7 @@ export default function UserDetail({ usercode }) {
             </Stack>
 
             <Stack direction={"row"} gap={1}>
-              <UserEditModal user={user} getUserData={getUserData} />
+              <UserEditModal user={user} />
               <UserDeleteModal userId={user.id} />
             </Stack>
           </Stack>
