@@ -1,4 +1,4 @@
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import { LoadingButton } from "@mui/lab";
 import {
   FormControl,
@@ -6,28 +6,24 @@ import {
   MenuItem,
   Select,
   Stack,
-  Switch,
   TextField,
-  Tooltip,
-  Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { toast } from "react-toastify";
-import { editUser } from "../../apis/user_apis";
+import { postUser } from "../../apis/user_apis";
 
-export default function UserEditModal({ user, getUserData }) {
+export default function UserAddModal({ getData }) {
+  const router = useRouter();
+  const page = router.query.page ?? 1;
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [sexValue, setSexValue] = React.useState(user.gender);
-  const [checkActive, setCheckActive] = React.useState(
-    user.status === "active" ? true : false
-  );
-
+  const [sexValue, setSexValue] = React.useState("");
   const nameRef = React.useRef(null);
   const emailRef = React.useRef(null);
 
@@ -35,36 +31,36 @@ export default function UserEditModal({ user, getUserData }) {
     setSexValue(event.target.value);
   }
 
-  function handleSwitchStatus(event) {
-    setCheckActive(event.target.checked);
-  }
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = (event, reason) => {
-    if (reason && reason == "backdropClick") {
+    if (reason && reason == "backdropClick" && loading) {
       return;
     } else {
       setOpen(false);
     }
   };
 
-  function handleEditUser() {
+  function handleCreateUser() {
     setLoading(true);
     const p = {
       name: nameRef.current.value,
       email: emailRef.current.value,
       gender: sexValue,
-      status: checkActive ? "active" : "inactive",
+      status: Math.random() * 10 > 4 ? "active" : "inactive",
     };
-    editUser(user.id, p)
+    postUser(p)
       .then(() => {
         handleClose();
         setLoading(false);
-        toast.success(`Successfully edited user #${user.id}.`);
-        getUserData();
+        toast.success(`Successfully created new user!`);
+        if (+page > 1) {
+          router.push(`/users`);
+        } else {
+          getData(1);
+        }
       })
       .catch(() => {
         toast.error("Something went wrong.");
@@ -77,11 +73,13 @@ export default function UserEditModal({ user, getUserData }) {
 
   return (
     <div>
-      <Tooltip arrow title="Edit user">
-        <Button color="secondary" onClick={handleClickOpen} variant="outlined">
-          <EditOutlinedIcon />
-        </Button>
-      </Tooltip>
+      <Button
+        onClick={handleClickOpen}
+        startIcon={<PersonAddAltRoundedIcon />}
+        sx={{ textTransform: "none" }}
+      >
+        Add New User
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -90,20 +88,11 @@ export default function UserEditModal({ user, getUserData }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {`Edit user #${user.id}`}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{`Create new user`}</DialogTitle>
         <DialogContent>
           <Stack gap={2} mt={2}>
+            <TextField fullWidth inputRef={nameRef} label="Name" type="text" />
             <TextField
-              defaultValue={user.name}
-              fullWidth
-              inputRef={nameRef}
-              label="Name"
-              type="text"
-            />
-            <TextField
-              defaultValue={user.email}
               fullWidth
               inputRef={emailRef}
               label="Email"
@@ -121,24 +110,11 @@ export default function UserEditModal({ user, getUserData }) {
                 <MenuItem value={"female"}>Female</MenuItem>
               </Select>
             </FormControl>
-            <Stack alignItems={"center"} direction={"row"} gap={1}>
-              <Typography color={!checkActive ? "error.main" : "text.main"}>
-                Inactive
-              </Typography>
-              <Switch
-                checked={checkActive}
-                onChange={handleSwitchStatus}
-                size="small"
-              />
-              <Typography color={checkActive ? "success.main" : "text.main"}>
-                Active
-              </Typography>
-            </Stack>
           </Stack>
         </DialogContent>
         <DialogActions>
           {loading ? (
-            <LoadingButton loading>Edit</LoadingButton>
+            <LoadingButton loading>Create</LoadingButton>
           ) : (
             <>
               <Button color="secondary" onClick={handleClose}>
@@ -146,11 +122,11 @@ export default function UserEditModal({ user, getUserData }) {
               </Button>
               <Button
                 autoFocus
-                onClick={handleEditUser}
-                startIcon={<EditOutlinedIcon />}
+                onClick={handleCreateUser}
+                startIcon={<PersonAddAltRoundedIcon />}
                 variant="contained"
               >
-                Edit
+                Create
               </Button>
             </>
           )}

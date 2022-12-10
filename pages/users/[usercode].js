@@ -15,6 +15,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import PageLoader from "next/dist/client/page-loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -39,30 +40,36 @@ export default function UserDetail({ usercode }) {
   const [user, setUser] = React.useState(null);
   const [userPosts, setUserPosts] = React.useState(null);
   const [page, setPage] = React.useState(1);
-  const [hasMore, setHasMore] = React.useState(true);
-  const [loadBtn, setLoadBtn] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
 
   function getUserData() {
-    setLoadBtn(true);
+    setLoading(true);
     getUserDetail(usercode)
       .then((res) => {
         setUser(res.data);
-        getUserPosts(usercode, { page: page, per_page: 20 }).then((res) => {
-          setUserPosts([...(userPosts || []), ...res.data]);
-          setHasMore(true);
-          setLoadBtn(false);
-        });
       })
       .catch(() => {
-        setUserPosts([]);
-        setHasMore(false);
-        setLoadBtn(false);
+        setLoading(false);
       });
+  }
+
+  function getPostsData() {
+    setLoading(true);
+    getUserPosts(usercode, { page: page })
+      .then((res) => {
+        setUserPosts(res);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }
 
   React.useEffect(() => {
     getUserData();
   }, []);
+
+  React.useEffect(() => {
+    getPostsData();
+  }, [page]);
 
   return (
     <Box mt={3}>
@@ -140,7 +147,7 @@ export default function UserDetail({ usercode }) {
             </Stack>
 
             <Stack direction={"row"} gap={1}>
-              <UserEditModal user={user} />
+              <UserEditModal user={user} getUserData={getUserData} />
               <UserDeleteModal userId={user.id} />
             </Stack>
           </Stack>

@@ -72,11 +72,14 @@ export default function UserDeleteModal({ userId }) {
             <LoadingButton loading>Delete</LoadingButton>
           ) : (
             <>
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button color="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
               <Button
                 autoFocus
                 color="error"
                 onClick={handleDeleteUser}
+                startIcon={<DeleteForeverOutlinedIcon />}
                 variant="contained"
               >
                 Delete

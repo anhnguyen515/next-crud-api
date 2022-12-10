@@ -1,49 +1,64 @@
-import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Breadcrumbs,
   Button,
   CircularProgress,
   Grid,
+  Pagination,
   Stack,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { getAllUsers } from "../../apis/user_apis";
+import UserAddModal from "../../components/User/UserAddModal";
 import UserCard from "../../components/User/UserCard";
 
-export default function Users() {
-  const [users, setUsers] = React.useState(null);
-  const [page, setPage] = React.useState(1);
-  const [hasMore, setHasMore] = React.useState(true);
-  const [loadBtn, setLoadBtn] = React.useState(false);
+export async function getServerSideProps(context) {
+  const { page } = context.query;
+  const _page = page ?? 1;
 
-  function getData() {
-    setLoadBtn(true);
-    getAllUsers({ page: page, per_page: 20 })
+  return {
+    props: {
+      page: _page,
+    },
+  };
+}
+
+export default function Users({ page }) {
+  const router = useRouter();
+  const [users, setUsers] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  console.log(users?.headers);
+
+  function handleChangePage(event, value) {
+    router.push({
+      pathname: `/users`,
+      query: {
+        page: value,
+      },
+    });
+  }
+
+  function getData(page) {
+    setLoading(true);
+    getAllUsers({ page: page })
       .then((res) => {
-        setUsers([...(users || []), ...res.data]);
-        setHasMore(true);
-        setLoadBtn(false);
+        setUsers(res);
+        setLoading(false);
       })
       .catch(() => {
-        setUsers([]);
-        setHasMore(false);
-        setLoadBtn(false);
+        setLoading(false);
       });
   }
 
-  function loadMoreUsers() {
-    setPage((prev) => prev + 1);
-  }
-
   React.useEffect(() => {
-    getData();
-  }, [page]);
+    getData(page);
+  }, []);
 
   return (
     <Box mt={3}>
@@ -57,8 +72,8 @@ export default function Users() {
           Users
         </Typography>
       </Breadcrumbs>
-      {users ? (
-        <div>
+      {!loading ? (
+        <Stack>
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
@@ -66,40 +81,40 @@ export default function Users() {
             mt={1}
           >
             <Typography fontSize={"1.5rem"} variant="h2">
-              Users
+              Users{" "}
+              <Typography
+                color={"text.main"}
+                component="span"
+                fontSize={"0.7rem"}
+              >
+                (showing {+page * +users.headers["x-pagination-limit"] - 9}-
+                {+page === +users.headers["x-pagination-pages"]
+                  ? users.headers["x-pagination-total"]
+                  : +page * +users.headers["x-pagination-limit"]}{" "}
+                of {users.headers["x-pagination-total"]})
+              </Typography>
             </Typography>
-            <Button
-              component={Link}
-              href={`/users/add-user`}
-              startIcon={<PersonAddAltRoundedIcon />}
-              sx={{ textTransform: "none" }}
-            >
-              Add New User
-            </Button>
+            <UserAddModal getData={getData} />
           </Stack>
           <Grid container spacing={2}>
-            {users.map((item, index) => (
+            {users.data.map((item, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
                 <UserCard user={item} />
               </Grid>
             ))}
           </Grid>
-          <Stack alignItems={"center"} mt={3}>
-            {hasMore ? (
-              <LoadingButton
-                loading={loadBtn}
-                onClick={loadMoreUsers}
-                startIcon={<ArrowDownwardRoundedIcon />}
-                sx={{ textTransform: "none" }}
-                variant="outlined"
-              >
-                Load More
-              </LoadingButton>
-            ) : (
-              <Typography>No more data to load</Typography>
-            )}
-          </Stack>
-        </div>
+          {+users.headers["x-pagination-pages"] > 1 && (
+            <Stack alignItems={"center"} mt={3}>
+              <Pagination
+                color="primary"
+                count={+users.headers["x-pagination-pages"]}
+                onChange={handleChangePage}
+                page={+page}
+                shape="rounded"
+              />
+            </Stack>
+          )}
+        </Stack>
       ) : (
         <Stack
           alignItems={"center"}

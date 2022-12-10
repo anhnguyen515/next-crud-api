@@ -42,7 +42,7 @@ export default function Homepage() {
           </Typography>
           <Grid container spacing={2}>
             {posts.map((item, index) => (
-              <Grid key={index} item xs={12} sm={6}>
+              <Grid key={index} item xs={12} sm={6} md={4}>
                 <PostCard post={item} />
               </Grid>
             ))}

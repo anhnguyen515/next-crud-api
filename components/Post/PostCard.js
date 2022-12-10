@@ -14,10 +14,22 @@ export default function PostCard({ post }) {
           "&:hover": { backgroundColor: "primary.light" },
         }}
       >
-        <Typography fontSize={"1.3rem"} fontWeight={500} gutterBottom>
+        <Typography
+          fontSize={"1.3rem"}
+          fontWeight={500}
+          gutterBottom
+          sx={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
           {post.title}
         </Typography>
         <Typography
+          color="text.main"
           sx={{
             mt: "auto",
             display: "-webkit-box",
@@ -25,7 +37,6 @@ export default function PostCard({ post }) {
             WebkitLineClamp: 2,
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: "text.main",
           }}
         >
           {post.body}
