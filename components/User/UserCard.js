@@ -1,10 +1,7 @@
 import { Paper, Stack, Typography } from "@mui/material";
-import React from "react";
-import MaleIcon from "@mui/icons-material/Male";
-import FemaleIcon from "@mui/icons-material/Female";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import { capitalizedWord } from "../../utils/utils";
 import Link from "next/link";
+import React from "react";
+import { capitalizedWord } from "../../utils/utils";
 
 export default function UserCard({ user }) {
   return (
@@ -25,37 +22,8 @@ export default function UserCard({ user }) {
         <Stack>
           <Typography fontSize={"1.1rem"} fontWeight={500}>
             {user.name}
-            {user.genre === "male" ? (
-              <MaleIcon
-                fontSize="inherit"
-                sx={{ color: "#64b5f6", position: "relative", top: 3 }}
-              />
-            ) : (
-              <FemaleIcon
-                fontSize="inherit"
-                sx={{ color: "#f06292", position: "relative", top: 3 }}
-              />
-            )}
           </Typography>
-          <Stack
-            alignItems={"center"}
-            direction={"row"}
-            gap={0.5}
-            mb={0.5}
-            sx={{ color: "text.main" }}
-          >
-            <EmailOutlinedIcon fontSize="inherit" />
-            <Typography
-              fontSize={"0.8rem"}
-              sx={{
-                overflow: " hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {user.email}
-            </Typography>
-          </Stack>
+
           <Typography fontSize={"0.7rem"}>
             Status:{" "}
             <Typography

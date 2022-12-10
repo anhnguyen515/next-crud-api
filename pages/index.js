@@ -26,7 +26,7 @@ export default function Homepage() {
     <>
       {users && posts ? (
         <Box mt={3}>
-          <Typography fontSize={"1.3rem"} gutterBottom variant="h2">
+          <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
             New Users
           </Typography>
           <Grid container spacing={2}>
@@ -37,7 +37,7 @@ export default function Homepage() {
             ))}
           </Grid>
           <br />
-          <Typography fontSize={"1.3rem"} gutterBottom variant="h2">
+          <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
             New Posts
           </Typography>
           <Grid container spacing={2}>

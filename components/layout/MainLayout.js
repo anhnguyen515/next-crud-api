@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import ScrollToTop from "react-scroll-to-top";
 
 export default function MainLayout({ children, isDarkMode, toggleTheme }) {
   const router = useRouter();
@@ -25,9 +26,11 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
           gap={2}
           justifyContent={"space-between"}
         >
-          <Typography fontSize={"1.6rem"} fontWeight={600} variant="h1">
-            Simple CRUD
-          </Typography>
+          <Link href={`/`}>
+            <Typography fontSize={"1.3rem"} fontWeight={600} variant="h1">
+              Simple CRUD
+            </Typography>
+          </Link>
           <Stack
             alignItems={"center"}
             direction={"row"}
@@ -71,6 +74,7 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
           </Stack>
         </Stack>
         {children}
+        <ScrollToTop smooth />
       </Box>
     </Container>
   );

@@ -1,5 +1,6 @@
 import "@fontsource/roboto";
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { CacheProvider } from "@emotion/react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -10,6 +11,7 @@ import MainLayout from "../components/layout/MainLayout";
 import createEmotionCache from "../utils/createEmotionCache";
 import { darkTheme, lightTheme } from "../utils/theme";
 import { DefaultSeo } from "next-seo";
+import { ToastContainer } from "react-toastify";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -55,6 +57,7 @@ function MyApp({
             <Component {...pageProps} />
           </MainLayout>
         </ThemeProvider>
+        <ToastContainer autoClose={3000} />
       </CacheProvider>
     </>
   );
