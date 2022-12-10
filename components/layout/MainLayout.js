@@ -18,7 +18,13 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
   return (
     <Container maxWidth="lg">
       <Box sx={{ pt: 3, pb: 3 }}>
-        <Stack alignItems={"center"} direction={"row"}>
+        <Stack
+          alignItems={"center"}
+          direction={"row"}
+          flexWrap={"wrap"}
+          gap={2}
+          justifyContent={"space-between"}
+        >
           <Typography fontSize={"1.6rem"} fontWeight={600} variant="h1">
             Simple CRUD
           </Typography>
@@ -27,7 +33,6 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
             direction={"row"}
             divider={<Divider orientation="vertical" flexItem />}
             gap={3}
-            sx={{ ml: "auto" }}
           >
             <Link href={"/"}>
               <Typography

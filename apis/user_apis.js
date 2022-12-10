@@ -1,7 +1,7 @@
 import axiosClient from "../utils/axiosConfig";
 
-export function getAllUsers() {
-  return axiosClient.get(`/users`);
+export function getAllUsers(params) {
+  return axiosClient.get(`/users`, { params });
 }
 
 export function postUser(body) {

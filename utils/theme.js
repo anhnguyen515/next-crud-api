@@ -14,6 +14,12 @@ export const lightTheme = createTheme({
       main: grey[500],
       dark: grey[600],
     },
+    text: {
+      primary: grey[800],
+      light: grey[300],
+      main: grey[500],
+      dark: grey[700],
+    },
     success: {
       main: green[500],
       contrastText: "#fff",
@@ -37,6 +43,11 @@ export const darkTheme = createTheme({
       light: grey[400],
       main: grey[500],
       dark: grey[600],
+    },
+    text: {
+      light: grey[300],
+      main: grey[500],
+      dark: grey[700],
     },
     success: {
       main: green[500],
