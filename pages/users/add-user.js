@@ -33,16 +33,15 @@ export default function AddUserPage() {
       name: nameRef.current.value,
       email: emailRef.current.value,
       gender: sexValue,
-      status: Math.random() * 10 > 5 ? "active" : "inactive",
+      status: Math.random() * 10 > 4 ? "active" : "inactive",
     };
     postUser(p)
-      .then((res) => {
-        console.log(res);
-        toast.success(res.data.msg);
+      .then(() => {
+        toast.success("Successfully created new user!");
         router.push(`/users`);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        toast.error("Something went wrong.");
       });
   }
 
@@ -77,7 +76,6 @@ export default function AddUserPage() {
           >
             <MenuItem value={"male"}>Male</MenuItem>
             <MenuItem value={"female"}>Female</MenuItem>
-            <MenuItem value={"other"}>Other</MenuItem>
           </Select>
         </FormControl>
       </Stack>

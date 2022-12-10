@@ -15,3 +15,11 @@ export function getUserPosts(userId, params) {
 export function postUser(body) {
   return axiosClient.post(`/users`, body);
 }
+
+export function editUser(userId, body) {
+  return axiosClient.put(`/users/${userId}`, body);
+}
+
+export function deleteUser(userId) {
+  return axiosClient.delete(`/users/${userId}`);
+}
