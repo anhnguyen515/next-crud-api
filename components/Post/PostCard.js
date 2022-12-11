@@ -7,10 +7,8 @@ export default function PostCard({ post }) {
     <Link href={`/posts/${post.id}`}>
       <Paper
         sx={{
-          display: "flex",
-          flexDirection: "column",
           p: 2,
-          height: "100%",
+          transition: "all 0.2s",
           "&:hover": { backgroundColor: "primary.light" },
         }}
       >
@@ -21,7 +19,7 @@ export default function PostCard({ post }) {
           sx={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 1,
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
@@ -30,11 +28,11 @@ export default function PostCard({ post }) {
         </Typography>
         <Typography
           color="text.main"
+          fontSize={"0.9rem"}
           sx={{
-            mt: "auto",
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 5,
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}

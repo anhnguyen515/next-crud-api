@@ -1,5 +1,6 @@
-import { Box, CircularProgress, Grid, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getAllPosts } from "../apis/post_apis";
 import { getAllUsers } from "../apis/user_apis";
 import PostCard from "../components/Post/PostCard";
@@ -29,24 +30,24 @@ export default function Homepage() {
           <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
             New Users
           </Typography>
-          <Grid container spacing={2}>
-            {users.map((item, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4}>
-                <UserCard user={item} />
-              </Grid>
-            ))}
-          </Grid>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+            <Masonry gutter="1rem">
+              {users.map((item, index) => (
+                <UserCard key={index} user={item} />
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
           <br />
           <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
             New Posts
           </Typography>
-          <Grid container spacing={2}>
-            {posts.map((item, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4}>
-                <PostCard post={item} />
-              </Grid>
-            ))}
-          </Grid>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+            <Masonry gutter="1rem">
+              {posts.map((item, index) => (
+                <PostCard key={index} post={item} />
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
         </Box>
       ) : (
         <Stack

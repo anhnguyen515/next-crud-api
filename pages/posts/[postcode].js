@@ -1,8 +1,15 @@
-import { useRouter } from "next/router";
 import React from "react";
 
-export default function PostDetail() {
-  const router = useRouter();
-  const { postcode } = router.query;
+export async function getServerSideProps(context) {
+  const { postcode } = context.query;
+
+  return {
+    props: {
+      postcode,
+    },
+  };
+}
+
+export default function PostDetail({ postcode }) {
   return <div>{postcode}</div>;
 }

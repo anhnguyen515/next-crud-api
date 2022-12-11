@@ -19,7 +19,9 @@ import PageLoader from "next/dist/client/page-loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getUserDetail, getUserPosts } from "../../apis/user_apis";
+import PostAddModal from "../../components/Post/PostAddModal";
 import PostCard from "../../components/Post/PostCard";
 import UserDeleteModal from "../../components/User/UserDeleteModal";
 import UserEditModal from "../../components/User/UserEditModal";
@@ -40,27 +42,21 @@ export default function UserDetail({ usercode }) {
   const [user, setUser] = React.useState(null);
   const [userPosts, setUserPosts] = React.useState(null);
   const [page, setPage] = React.useState(1);
-  const [loading, setLoading] = React.useState(true);
 
   function getUserData() {
-    setLoading(true);
     getUserDetail(usercode)
       .then((res) => {
         setUser(res.data);
       })
-      .catch(() => {
-        setLoading(false);
-      });
+      .catch(() => {});
   }
 
   function getPostsData() {
-    setLoading(true);
     getUserPosts(usercode, { page: page })
       .then((res) => {
         setUserPosts(res);
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {});
   }
 
   React.useEffect(() => {
@@ -147,6 +143,7 @@ export default function UserDetail({ usercode }) {
             </Stack>
 
             <Stack direction={"row"} gap={1}>
+              <PostAddModal getData={getPostsData} iconBtn user={user} />
               <UserEditModal user={user} getUserData={getUserData} />
               <UserDeleteModal userId={user.id} />
             </Stack>
@@ -156,14 +153,14 @@ export default function UserDetail({ usercode }) {
             <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
               User&apos;s posts
             </Typography>
-            {userPosts.length > 0 ? (
-              <Grid container spacing={2}>
-                {userPosts.map((item, index) => (
-                  <Grid key={index} item xs={12} sm={6}>
-                    <PostCard post={item} />
-                  </Grid>
-                ))}
-              </Grid>
+            {userPosts.data.length > 0 ? (
+              <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+                <Masonry>
+                  {userPosts.data.map((item, index) => (
+                    <PostCard key={index} post={item} />
+                  ))}
+                </Masonry>
+              </ResponsiveMasonry>
             ) : (
               <Typography>This user currently has no post</Typography>
             )}

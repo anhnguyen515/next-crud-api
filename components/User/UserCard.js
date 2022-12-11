@@ -11,8 +11,7 @@ export default function UserCard({ user }) {
         variant="outlined"
         sx={{
           p: 2,
-          height: "100%",
-          width: "100%",
+          transition: "all 0.2s",
           "&:hover": {
             backgroundColor: "primary.light",
             borderColor: "primary.main",

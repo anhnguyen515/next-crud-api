@@ -1,6 +1,6 @@
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { LoadingButton } from "@mui/lab";
-import { Autocomplete, Stack, TextField } from "@mui/material";
+import { Autocomplete, Stack, TextField, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -12,14 +12,14 @@ import { toast } from "react-toastify";
 import { postPost } from "../../apis/post_apis";
 import { getAllUsers } from "../../apis/user_apis";
 
-export default function PostAddModal({ getData }) {
+export default function PostAddModal({ getData, iconBtn, user }) {
   const router = useRouter();
   const page = router.query.page ?? 1;
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [searchUsers, setSearchUsers] = React.useState([]);
 
-  const [value, setValue] = React.useState(searchUsers[0]);
+  const [value, setValue] = React.useState(user || searchUsers[0]);
   const [inputValue, setInputValue] = React.useState("");
 
   const titleRef = React.useRef(null);
@@ -76,13 +76,26 @@ export default function PostAddModal({ getData }) {
 
   return (
     <div>
-      <Button
-        onClick={handleClickOpen}
-        startIcon={<PostAddIcon />}
-        sx={{ textTransform: "none" }}
-      >
-        Add New Post
-      </Button>
+      {!iconBtn ? (
+        <Button
+          onClick={handleClickOpen}
+          startIcon={<PostAddIcon />}
+          sx={{ textTransform: "none" }}
+        >
+          Add New Post
+        </Button>
+      ) : (
+        <Tooltip arrow title="Add post">
+          <Button
+            color={"secondary"}
+            onClick={handleClickOpen}
+            sx={{ textTransform: "none" }}
+            variant={"outlined"}
+          >
+            <PostAddIcon />
+          </Button>
+        </Tooltip>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -109,6 +122,8 @@ export default function PostAddModal({ getData }) {
               type="text"
             />
             <Autocomplete
+              disabled={user}
+              disableClearable
               value={value}
               onChange={(event, newValue) => {
                 setValue(newValue);

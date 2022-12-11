@@ -12,13 +12,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import ScrollToTop from "react-scroll-to-top";
+import { BsGithub, BsMailbox2, BsTelephoneFill } from "react-icons/bs";
 
 export default function MainLayout({ children, isDarkMode, toggleTheme }) {
   const router = useRouter();
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ pt: 3, pb: 3 }}>
+      <Stack sx={{ pt: 3, pb: 3, minHeight: "100vh" }}>
         <Stack
           alignItems={"center"}
           direction={"row"}
@@ -65,9 +66,49 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
             </IconButton>
           </Stack>
         </Stack>
-        {children}
+        <Box sx={{ flex: 1 }}>{children}</Box>
+        <Divider light sx={{ mt: 3, mb: 3 }} />
+        <Stack
+          alignItems={"center"}
+          direction={"row"}
+          flexWrap={"wrap"}
+          gap={2}
+          justifyContent={"space-between"}
+        >
+          <Typography fontSize={"1.2rem"} fontWeight={500} variant="h3">
+            Simple CRUD
+          </Typography>
+          <Stack alignItems={"center"}>
+            <Typography variant="caption">Made by Anh Nguyễn</Typography>
+            <Typography variant="caption">
+              with{" "}
+              <a href="https://gorest.co.in" style={{ color: "grey" }}>
+                https://gorest.co.in
+              </a>{" "}
+              API
+            </Typography>
+          </Stack>
+          <Stack gap={0.5}>
+            <Stack alignItems={"center"} direction={"row"} gap={1}>
+              <BsGithub />
+              <Typography variant="caption">
+                <a href="https://github.com/anhnguyen515">
+                  https://github.com/
+                </a>
+              </Typography>
+            </Stack>
+            <Stack alignItems={"center"} direction={"row"} gap={1}>
+              <BsMailbox2 />
+              <Typography variant="caption">ndtatuananh@gmail.com</Typography>
+            </Stack>
+            <Stack alignItems={"center"} direction={"row"} gap={1}>
+              <BsTelephoneFill />
+              <Typography variant="caption">039 8938 320</Typography>
+            </Stack>
+          </Stack>
+        </Stack>
         <ScrollToTop smooth />
-      </Box>
+      </Stack>
     </Container>
   );
 }
