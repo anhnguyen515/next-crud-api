@@ -16,6 +16,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getUserDetail, getUserPosts } from "../../apis/user_apis";
 import PostAddModal from "../../components/Post/PostAddModal";
 import PostCard from "../../components/Post/PostCard";
+import PostSkeleton from "../../components/Skeleton/PostSkeleton";
 import UserDeleteModal from "../../components/User/UserDeleteModal";
 import UserEditModal from "../../components/User/UserEditModal";
 import { capitalizedWord } from "../../utils/utils";
@@ -171,7 +172,20 @@ export default function UserDetail({ usercode }) {
                 )}
               </Box>
             ) : (
-              <Typography>Loading...</Typography>
+              <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+                <Masonry gutter="1rem">
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                  <PostSkeleton />
+                </Masonry>
+              </ResponsiveMasonry>
             )}
           </Box>
           {+userPosts.headers["x-pagination-pages"] > 1 && (

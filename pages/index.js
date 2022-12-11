@@ -4,6 +4,8 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getAllPosts } from "../apis/post_apis";
 import { getAllUsers } from "../apis/user_apis";
 import PostCard from "../components/Post/PostCard";
+import PostSkeleton from "../components/Skeleton/PostSkeleton";
+import UserSkeleton from "../components/Skeleton/UserSkeleton";
 import UserCard from "../components/User/UserCard";
 
 export default function Homepage() {
@@ -50,16 +52,43 @@ export default function Homepage() {
           </ResponsiveMasonry>
         </Box>
       ) : (
-        <Stack
-          alignItems={"center"}
-          direction={"row"}
-          gap={2}
-          justifyContent={"center"}
-          mt={5}
-        >
-          <CircularProgress size={24} />
-          <Typography>Loading...</Typography>
-        </Stack>
+        <Box mt={3}>
+          <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
+            New Users
+          </Typography>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+            <Masonry gutter="1rem">
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+              <UserSkeleton />
+            </Masonry>
+          </ResponsiveMasonry>
+          <br />
+          <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
+            New Posts
+          </Typography>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+            <Masonry gutter="1rem">
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+            </Masonry>
+          </ResponsiveMasonry>
+        </Box>
       )}
     </>
   );
