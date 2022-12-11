@@ -3,6 +3,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MaleIcon from "@mui/icons-material/Male";
 import {
+  Avatar,
   Box,
   Breadcrumbs,
   CircularProgress,
@@ -93,55 +94,68 @@ export default function UserDetail({ usercode }) {
             gap={2}
             justifyContent={"space-between"}
           >
-            <Stack>
-              <Typography fontSize={"1.5rem"} fontWeight={500}>
-                {user.name}{" "}
-                {user.gender === "male" && (
-                  <MaleIcon
-                    fontSize="inherit"
-                    sx={{ color: "#64b5f6", position: "relative", top: 5 }}
-                  />
-                )}
-                {user.gender === "female" && (
-                  <FemaleIcon
-                    fontSize="inherit"
-                    sx={{ color: "#f06292", position: "relative", top: 5 }}
-                  />
-                )}
-              </Typography>
-              <Stack
-                alignItems={"center"}
-                direction={"row"}
-                gap={0.5}
-                mb={0.5}
-                sx={{ color: "text.main" }}
-              >
-                <EmailOutlinedIcon fontSize="inherit" />
-                <Typography
-                  fontSize={"0.9rem"}
-                  sx={{
-                    overflow: " hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
+            <Stack direction={"row"} gap={2}>
+              <Avatar
+                alt={user.name}
+                src={`https://picsum.photos/200`}
+                sx={{
+                  backgroundColor: "text.light",
+                  width: "5rem",
+                  height: "5rem",
+                }}
+              />
+              <Stack>
+                <Typography fontSize={"1.5rem"} fontWeight={500}>
+                  {user.name}{" "}
+                  {user.gender === "male" && (
+                    <MaleIcon
+                      fontSize="inherit"
+                      sx={{ color: "#64b5f6", position: "relative", top: 5 }}
+                    />
+                  )}
+                  {user.gender === "female" && (
+                    <FemaleIcon
+                      fontSize="inherit"
+                      sx={{ color: "#f06292", position: "relative", top: 5 }}
+                    />
+                  )}
+                </Typography>
+                <Stack
+                  alignItems={"center"}
+                  direction={"row"}
+                  gap={0.5}
+                  mb={0.5}
+                  sx={{ color: "text.main" }}
                 >
-                  {user.email}
+                  <EmailOutlinedIcon fontSize="inherit" />
+                  <Typography
+                    fontSize={"0.9rem"}
+                    sx={{
+                      overflow: " hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {user.email}
+                  </Typography>
+                </Stack>
+                <Typography fontSize={"0.9rem"}>
+                  Status:{" "}
+                  <Typography
+                    component={"span"}
+                    fontSize={"0.9rem"}
+                    fontWeight={500}
+                    sx={{
+                      color:
+                        user.status === "active"
+                          ? "success.main"
+                          : "error.main",
+                    }}
+                  >
+                    {capitalizedWord(user.status)}
+                  </Typography>
                 </Typography>
               </Stack>
-              <Typography fontSize={"0.9rem"}>
-                Status:{" "}
-                <Typography
-                  component={"span"}
-                  fontSize={"0.9rem"}
-                  fontWeight={500}
-                  sx={{
-                    color:
-                      user.status === "active" ? "success.main" : "error.main",
-                  }}
-                >
-                  {capitalizedWord(user.status)}
-                </Typography>
-              </Typography>
             </Stack>
 
             <Stack direction={"row"} gap={1}>

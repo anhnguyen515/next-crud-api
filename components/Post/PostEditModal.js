@@ -18,26 +18,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as React from "react";
 import { toast } from "react-toastify";
+import { editPost } from "../../apis/post_apis";
 import { editUser } from "../../apis/user_apis";
 
-export default function UserEditModal({ user, getUserData }) {
+export default function PostEditModal({ post, getPostData }) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [sexValue, setSexValue] = React.useState(user.gender);
-  const [checkActive, setCheckActive] = React.useState(
-    user.status === "active" ? true : false
-  );
 
-  const nameRef = React.useRef(null);
-  const emailRef = React.useRef(null);
-
-  function handleSelectSex(event) {
-    setSexValue(event.target.value);
-  }
-
-  function handleSwitchStatus(event) {
-    setCheckActive(event.target.checked);
-  }
+  const titleRef = React.useRef(null);
+  const bodyRef = React.useRef(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,20 +40,19 @@ export default function UserEditModal({ user, getUserData }) {
     }
   };
 
-  function handleEditUser() {
+  function handleEditPost() {
     setLoading(true);
     const p = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      gender: sexValue,
-      status: checkActive ? "active" : "inactive",
+      title: titleRef.current.value,
+      body: bodyRef.current.value,
+      user_id: post.user_id,
     };
-    editUser(user.id, p)
+    editPost(post.id, p)
       .then(() => {
         handleClose();
         setLoading(false);
-        toast.success(`Successfully edited user #${user.id}.`);
-        getUserData();
+        toast.success(`Successfully edited post #${post.id}.`);
+        getPostData();
       })
       .catch(() => {
         toast.error("Something went wrong.");
@@ -77,7 +65,7 @@ export default function UserEditModal({ user, getUserData }) {
 
   return (
     <div>
-      <Tooltip arrow title="Edit user">
+      <Tooltip arrow title="Edit post">
         <Button color="secondary" onClick={handleClickOpen} variant="outlined">
           <EditOutlinedIcon />
         </Button>
@@ -91,49 +79,26 @@ export default function UserEditModal({ user, getUserData }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Edit user #${user.id}`}
+          {`Edit post #${post.id}`}
         </DialogTitle>
         <DialogContent>
           <Stack gap={2} mt={2}>
             <TextField
-              defaultValue={user.name}
+              defaultValue={post.title}
               fullWidth
-              inputRef={nameRef}
-              label="Name"
+              inputRef={titleRef}
+              label="Title"
               type="text"
             />
             <TextField
-              defaultValue={user.email}
+              defaultValue={post.body}
               fullWidth
-              inputRef={emailRef}
-              label="Email"
+              inputRef={bodyRef}
+              label="Body"
+              minRows={3}
+              multiline
               type="email"
             />
-            <FormControl fullWidth>
-              <InputLabel id="sex">Gender</InputLabel>
-              <Select
-                labelId="sex"
-                label="Gender"
-                onChange={handleSelectSex}
-                value={sexValue}
-              >
-                <MenuItem value={"male"}>Male</MenuItem>
-                <MenuItem value={"female"}>Female</MenuItem>
-              </Select>
-            </FormControl>
-            <Stack alignItems={"center"} direction={"row"} gap={1}>
-              <Typography color={!checkActive ? "error.main" : "text.main"}>
-                Inactive
-              </Typography>
-              <Switch
-                checked={checkActive}
-                onChange={handleSwitchStatus}
-                size="small"
-              />
-              <Typography color={checkActive ? "success.main" : "text.main"}>
-                Active
-              </Typography>
-            </Stack>
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -146,7 +111,7 @@ export default function UserEditModal({ user, getUserData }) {
               </Button>
               <Button
                 autoFocus
-                onClick={handleEditUser}
+                onClick={handleEditPost}
                 startIcon={<EditOutlinedIcon />}
                 variant="contained"
               >

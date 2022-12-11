@@ -2,7 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getAllPosts } from "../apis/post_apis";
-import { getAllUsers } from "../apis/user_apis";
+import { getAllUsers, getUserDetail } from "../apis/user_apis";
 import PostCard from "../components/Post/PostCard";
 import PostSkeleton from "../components/Skeleton/PostSkeleton";
 import UserSkeleton from "../components/Skeleton/UserSkeleton";

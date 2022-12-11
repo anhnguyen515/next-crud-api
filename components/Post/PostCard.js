@@ -1,6 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { getUserDetail } from "../../apis/user_apis";
 
 export default function PostCard({ post }) {
   return (
@@ -32,7 +33,7 @@ export default function PostCard({ post }) {
           sx={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 5,
+            WebkitLineClamp: 3,
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}

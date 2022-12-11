@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from "@mui/material";
+import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 import { capitalizedWord } from "../../utils/utils";
@@ -10,6 +10,9 @@ export default function UserCard({ user }) {
         elevation={0}
         variant="outlined"
         sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
           p: 2,
           transition: "all 0.2s",
           "&:hover": {
@@ -18,6 +21,11 @@ export default function UserCard({ user }) {
           },
         }}
       >
+        <Avatar
+          alt={user.name}
+          src={`https://picsum.photos/100`}
+          sx={{ backgroundColor: "text.light" }}
+        />
         <Stack>
           <Typography fontSize={"1.1rem"} fontWeight={500}>
             {user.name}

@@ -10,9 +10,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { toast } from "react-toastify";
-import { deleteUser } from "../../apis/user_apis";
+import { deletePost } from "../../apis/post_apis";
 
-export default function UserDeleteModal({ userId }) {
+export default function PostDeleteModal({ postId }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -29,14 +29,14 @@ export default function UserDeleteModal({ userId }) {
     }
   };
 
-  function handleDeleteUser() {
+  function handleDeletePost() {
     setLoading(true);
-    deleteUser(userId)
+    deletePost(postId)
       .then(() => {
         handleClose();
         setLoading(false);
-        toast.success(`Deleted user #${userId}.`);
-        router.push(`/users`);
+        toast.success(`Deleted post #${postId}.`);
+        router.back();
       })
       .catch(() => {
         toast.error("Something went wrong.");
@@ -47,7 +47,7 @@ export default function UserDeleteModal({ userId }) {
 
   return (
     <div>
-      <Tooltip arrow title="Delete user">
+      <Tooltip arrow title="Delete post">
         <Button color="secondary" onClick={handleClickOpen} variant="outlined">
           <DeleteForeverOutlinedIcon />
         </Button>
@@ -59,12 +59,12 @@ export default function UserDeleteModal({ userId }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Permanently delete this user?"}
+          {"Permanently delete this post?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action will permanently delete this user. You can no longer
-            retrieve this user&apos;s data
+            This action will permanently delete this post. You can no longer
+            retrieve this post&apos;s data
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -78,7 +78,7 @@ export default function UserDeleteModal({ userId }) {
               <Button
                 autoFocus
                 color="error"
-                onClick={handleDeleteUser}
+                onClick={handleDeletePost}
                 startIcon={<DeleteForeverOutlinedIcon />}
                 variant="contained"
               >

@@ -75,25 +75,12 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
           gap={2}
           justifyContent={"space-between"}
         >
-          <Typography fontSize={"1.2rem"} fontWeight={500} variant="h3">
-            Simple CRUD
-          </Typography>
-          <Stack alignItems={"center"}>
-            <Typography variant="caption">Made by Anh Nguyễn</Typography>
-            <Typography variant="caption">
-              with{" "}
-              <a href="https://gorest.co.in" style={{ color: "grey" }}>
-                https://gorest.co.in
-              </a>{" "}
-              API
-            </Typography>
-          </Stack>
           <Stack gap={0.5}>
             <Stack alignItems={"center"} direction={"row"} gap={1}>
               <BsGithub />
               <Typography variant="caption">
                 <a href="https://github.com/anhnguyen515">
-                  https://github.com/
+                  https://github.com/anhnguyen515
                 </a>
               </Typography>
             </Stack>
@@ -105,6 +92,19 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
               <BsTelephoneFill />
               <Typography variant="caption">039 8938 320</Typography>
             </Stack>
+          </Stack>
+          <Typography fontSize={"1.2rem"} fontWeight={500} variant="h3">
+            Simple CRUD
+          </Typography>
+          <Stack alignItems={"flex-end"}>
+            <Typography variant="caption">Made by Anh Nguyễn</Typography>
+            <Typography variant="caption">
+              with{" "}
+              <a href="https://gorest.co.in" style={{ color: "grey" }}>
+                https://gorest.co.in
+              </a>{" "}
+              API
+            </Typography>
           </Stack>
         </Stack>
         <ScrollToTop smooth />
