@@ -71,11 +71,24 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
         <Stack
           alignItems={"center"}
           direction={"row"}
-          flexWrap={"wrap"}
           gap={2}
           justifyContent={"space-between"}
+          sx={{
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+            },
+          }}
         >
-          <Stack gap={0.5}>
+          <Stack
+            gap={0.5}
+            sx={{
+              alignItems: {
+                xs: "center",
+                sm: "flex-start",
+              },
+            }}
+          >
             <Stack alignItems={"center"} direction={"row"} gap={1}>
               <BsGithub />
               <Typography variant="caption">
@@ -96,7 +109,14 @@ export default function MainLayout({ children, isDarkMode, toggleTheme }) {
           <Typography fontSize={"1.2rem"} fontWeight={500} variant="h3">
             Simple CRUD
           </Typography>
-          <Stack alignItems={"flex-end"}>
+          <Stack
+            sx={{
+              alignItems: {
+                xs: "center",
+                sm: "flex-end",
+              },
+            }}
+          >
             <Typography variant="caption">Made by Anh Nguyễn</Typography>
             <Typography variant="caption">
               with{" "}

@@ -75,7 +75,14 @@ export default function Posts() {
           Posts
         </Typography>
       </Breadcrumbs>
-      <Stack direction={"row"} justifyContent={"space-between"} mb={1} mt={3}>
+      <Stack
+        direction={"row"}
+        flexWrap={"wrap"}
+        gap={1}
+        justifyContent={"space-between"}
+        mb={1}
+        mt={3}
+      >
         <Typography fontSize={"1.5rem"} variant="h2">
           Posts{" "}
           {posts && posts.data.length > 1 ? (

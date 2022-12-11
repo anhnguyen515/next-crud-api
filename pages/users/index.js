@@ -73,7 +73,14 @@ export default function Users() {
           Users
         </Typography>
       </Breadcrumbs>
-      <Stack direction={"row"} justifyContent={"space-between"} mb={1} mt={3}>
+      <Stack
+        direction={"row"}
+        flexWrap={"wrap"}
+        gap={1}
+        justifyContent={"space-between"}
+        mb={1}
+        mt={3}
+      >
         <Typography fontSize={"1.5rem"} variant="h2">
           Users{" "}
           {users && users.data.length > 1 ? (
