@@ -11,5 +11,6 @@ export async function getServerSideProps(context) {
 }
 
 export default function PostDetail({ postcode }) {
+  const [post, setPost] = React.useState(null);
   return <div>{postcode}</div>;
 }

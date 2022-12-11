@@ -17,23 +17,27 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getAllPosts } from "../../apis/post_apis";
 import PostAddModal from "../../components/Post/PostAddModal";
 import PostCard from "../../components/Post/PostCard";
+import PostSkeleton from "../../components/Skeleton/PostSkeleton";
 
 export default function Posts() {
   const [posts, setPosts] = React.useState(null);
   const [page, setPage] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
   const [query, setQuery] = React.useState("");
+  const [triggerEffect, setTriggerEffect] = React.useState("");
 
   const handleChange = (event, value) => {
+    setTriggerEffect("page" + value);
     setPage(value);
   };
 
   function handleChangeQuery(event) {
+    setTriggerEffect("query" + event.target.value);
     setQuery(event.target.value);
     setPage(1);
   }
 
-  function getData() {
+  function getData(page, query) {
     setLoading(true);
     getAllPosts({ page: page, title: query })
       .then((res) => {
@@ -47,12 +51,17 @@ export default function Posts() {
   }
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      getData();
-    }, 500);
+    let timer;
+    if (triggerEffect.includes("query")) {
+      timer = setTimeout(() => {
+        getData(page, query);
+      }, 500);
+    } else {
+      getData(page, query);
+    }
 
     return () => clearTimeout(timer);
-  }, [query, page]);
+  }, [triggerEffect]);
 
   return (
     <Box mt={3}>
@@ -111,7 +120,11 @@ export default function Posts() {
               {query !== "" && (
                 <CloseIcon
                   fontSize="inherit"
-                  onClick={() => setQuery("")}
+                  onClick={() => {
+                    setTriggerEffect("");
+                    setQuery("");
+                    setPage(1);
+                  }}
                   sx={{ cursor: "pointer" }}
                 />
               )}
@@ -144,16 +157,20 @@ export default function Posts() {
           )}
         </Stack>
       ) : (
-        <Stack
-          alignItems={"center"}
-          direction={"row"}
-          gap={2}
-          justifyContent={"center"}
-          mt={5}
-        >
-          <CircularProgress size={24} />
-          <Typography>Loading...</Typography>
-        </Stack>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+          <Masonry gutter="1rem">
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+          </Masonry>
+        </ResponsiveMasonry>
       )}
     </Box>
   );

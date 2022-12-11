@@ -4,7 +4,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Breadcrumbs,
-  CircularProgress,
   InputAdornment,
   Pagination,
   Stack,
@@ -15,6 +14,7 @@ import Link from "next/link";
 import React from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getAllUsers } from "../../apis/user_apis";
+import UserSkeleton from "../../components/Skeleton/UserSkeleton";
 import UserAddModal from "../../components/User/UserAddModal";
 import UserCard from "../../components/User/UserCard";
 
@@ -23,17 +23,20 @@ export default function Users() {
   const [loading, setLoading] = React.useState(true);
   const [query, setQuery] = React.useState("");
   const [page, setPage] = React.useState(1);
+  const [triggerEffect, setTriggerEffect] = React.useState("");
 
   function handleChangeQuery(event) {
+    setTriggerEffect("query" + event.target.value);
     setQuery(event.target.value);
     setPage(1);
   }
 
   function handleChangePage(event, value) {
+    setTriggerEffect("page" + value);
     setPage(value);
   }
 
-  function getData() {
+  function getData(page, query) {
     setLoading(true);
     getAllUsers({ page: page, name: query })
       .then((res) => {
@@ -46,12 +49,17 @@ export default function Users() {
   }
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      getData();
-    }, 500);
+    let timer;
+    if (triggerEffect.includes("query")) {
+      timer = setTimeout(() => {
+        getData(page, query);
+      }, 500);
+    } else {
+      getData(page, query);
+    }
 
     return () => clearTimeout(timer);
-  }, [query, page]);
+  }, [triggerEffect]);
 
   return (
     <Box mt={3}>
@@ -113,6 +121,7 @@ export default function Users() {
                   onClick={() => {
                     setQuery("");
                     setPage(1);
+                    setTriggerEffect("");
                   }}
                   sx={{ cursor: "pointer" }}
                 />
@@ -146,16 +155,20 @@ export default function Users() {
           )}
         </Stack>
       ) : (
-        <Stack
-          alignItems={"center"}
-          direction={"row"}
-          gap={2}
-          justifyContent={"center"}
-          mt={5}
-        >
-          <CircularProgress size={24} />
-          <Typography>Loading...</Typography>
-        </Stack>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
+          <Masonry gutter="1rem">
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+            <UserSkeleton />
+          </Masonry>
+        </ResponsiveMasonry>
       )}
     </Box>
   );

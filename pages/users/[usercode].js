@@ -1,5 +1,3 @@
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import FemaleIcon from "@mui/icons-material/Female";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -7,17 +5,12 @@ import MaleIcon from "@mui/icons-material/Male";
 import {
   Box,
   Breadcrumbs,
-  Button,
-  ButtonGroup,
   CircularProgress,
-  Grid,
+  Pagination,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import PageLoader from "next/dist/client/page-loader";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { getUserDetail, getUserPosts } from "../../apis/user_apis";
@@ -38,10 +31,14 @@ export async function getServerSideProps(context) {
 }
 
 export default function UserDetail({ usercode }) {
-  const router = useRouter();
   const [user, setUser] = React.useState(null);
   const [userPosts, setUserPosts] = React.useState(null);
+  const [postLoading, setPostLoading] = React.useState(true);
   const [page, setPage] = React.useState(1);
+
+  function handleChangePage(event, value) {
+    setPage(value);
+  }
 
   function getUserData() {
     getUserDetail(usercode)
@@ -52,11 +49,15 @@ export default function UserDetail({ usercode }) {
   }
 
   function getPostsData() {
+    setPostLoading(true);
     getUserPosts(usercode, { page: page })
       .then((res) => {
         setUserPosts(res);
+        setPostLoading(false);
       })
-      .catch(() => {});
+      .catch(() => {
+        setPostLoading(false);
+      });
   }
 
   React.useEffect(() => {
@@ -153,18 +154,37 @@ export default function UserDetail({ usercode }) {
             <Typography fontSize={"1.5rem"} gutterBottom variant="h2">
               User&apos;s posts
             </Typography>
-            {userPosts.data.length > 0 ? (
-              <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }}>
-                <Masonry>
-                  {userPosts.data.map((item, index) => (
-                    <PostCard key={index} post={item} />
-                  ))}
-                </Masonry>
-              </ResponsiveMasonry>
+            {!postLoading ? (
+              <Box>
+                {userPosts.data.length > 0 ? (
+                  <ResponsiveMasonry
+                    columnsCountBreakPoints={{ 350: 1, 750: 2 }}
+                  >
+                    <Masonry gutter="1rem">
+                      {userPosts.data.map((item, index) => (
+                        <PostCard key={index} post={item} />
+                      ))}
+                    </Masonry>
+                  </ResponsiveMasonry>
+                ) : (
+                  <Typography>This user currently has no post</Typography>
+                )}
+              </Box>
             ) : (
-              <Typography>This user currently has no post</Typography>
+              <Typography>Loading...</Typography>
             )}
           </Box>
+          {+userPosts.headers["x-pagination-pages"] > 1 && (
+            <Stack alignItems={"center"} mt={3}>
+              <Pagination
+                color="primary"
+                count={+userPosts.headers["x-pagination-pages"]}
+                onChange={handleChangePage}
+                page={page}
+                shape="rounded"
+              />
+            </Stack>
+          )}
         </Box>
       ) : (
         <Stack
